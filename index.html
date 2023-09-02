@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Library</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <dialog id="formDialog">
+      <div id="closeDialog">
+        <button id="closeDialogButton">X</button>
+      </div>
+      <div id="formContainer">
+        <form id="addBookForm">
+          <div>
+            <label for="title">Title:</label>
+            <input type="text" name="title" placeholder="title" />
+          </div>
+          <div>
+            <label for="title">Author:</label>
+            <input type="text" name="author" placeholder="Author" />
+          </div>
+          <div>
+            <label for="pages">Number of Pages:</label>
+            <input type="number" name="pages" placeholder="Number of pages" />
+          </div>
+          <div class="horizontalField">
+            <label for="readYet">Have you read this yet?</label>
+            <input type="checkbox" name="readYet" />
+          </div>
+          <div id="buttonFields" class="horizontalField">
+            <button type="submit" id="addButton">Add</button>
+          </div>
+        </form>
+      </div>
+    </dialog>
+    <div id="catalogContainer" class="container">
+      <h1>Library</h1>
+      <button id="addBook">Add Book</button>
+      <hr />
+      <div id="catalog"></div>
+    </div>
+  </body>
+  <script src="index.js"></script>
+</html>

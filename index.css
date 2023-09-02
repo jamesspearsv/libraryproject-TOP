@@ -1,0 +1,84 @@
+:root {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  font-size: 16px;
+}
+
+.container {
+  position: absolute;
+  flex-direction: column;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  display: flex;
+  align-items: center;
+  padding: 1rem 4rem;
+}
+
+#formDialog {
+  border: none;
+  border-radius: 10px;
+}
+
+#formDialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.52);
+}
+
+#closeDialog {
+  display: flex;
+  justify-content: end;
+}
+
+#addBookForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  gap: 1rem;
+}
+
+#addBookForm > div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+#addBookForm > .horizontalField {
+  flex-direction: row;
+  align-items: center;
+}
+
+#addBookForm > .horizontalField > button {
+  flex: 1;
+}
+
+#addBookForm input {
+  height: 1rem;
+}
+
+hr {
+  width: 100%;
+}
+
+#catalog {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: start;
+}
+
+#catalog > .card {
+  background-color: rgb(238, 235, 235);
+  height: fit-content;
+  width: 20%;
+  padding: 2rem;
+  border-radius: 1rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
