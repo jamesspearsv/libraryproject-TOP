@@ -7,40 +7,61 @@
     <link rel="stylesheet" href="index.css" />
   </head>
   <body>
+    <nav>
+      <h1>Library</h1>
+      <button id="addBook">Add Book</button>
+    </nav>
     <dialog id="formDialog">
       <div id="closeDialog">
-        <button id="closeDialogButton">X</button>
+        <button id="closeDialogButton" class="danger">X</button>
       </div>
       <div id="formContainer">
         <form id="addBookForm">
           <div>
             <label for="title">Title:</label>
-            <input type="text" name="title" placeholder="title" />
+            <input
+              type="text"
+              name="title"
+              placeholder="title"
+              class="formInput"
+              required
+            />
           </div>
           <div>
             <label for="title">Author:</label>
-            <input type="text" name="author" placeholder="Author" />
+            <input
+              type="text"
+              name="author"
+              placeholder="Author"
+              class="formInput"
+              required
+            />
           </div>
           <div>
             <label for="pages">Number of Pages:</label>
-            <input type="number" name="pages" placeholder="Number of pages" />
+            <input
+              type="number"
+              name="pages"
+              placeholder="Number of pages"
+              class="formInput"
+              required
+            />
           </div>
           <div class="horizontalField">
             <label for="readYet">Have you read this yet?</label>
-            <input type="checkbox" name="readYet" />
+            <input type="checkbox" name="readYet" id="checkbox" />
           </div>
           <div id="buttonFields" class="horizontalField">
-            <button type="submit" id="addButton">Add</button>
+            <button type="submit" id="addButton" class="positive formInput">
+              Add
+            </button>
           </div>
         </form>
       </div>
     </dialog>
-    <div id="catalogContainer" class="container">
-      <h1>Library</h1>
-      <button id="addBook">Add Book</button>
-      <hr />
+    <section id="catalogContainer" class="container">
       <div id="catalog"></div>
-    </div>
+    </section>
   </body>
   <script src="index.js"></script>
 </html>

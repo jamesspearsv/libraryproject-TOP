@@ -5,17 +5,26 @@
   font-size: 16px;
 }
 
-.container {
-  position: absolute;
-  flex-direction: column;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+body {
+  margin: 0;
+  padding: 0;
+}
 
+nav {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 6rem;
+  background-color: #5da271;
+  color: white;
+}
+
+.container {
+  flex-direction: column;
   display: flex;
   align-items: center;
   padding: 1rem 4rem;
+  width: 70%;
+  margin: auto;
 }
 
 #formDialog {
@@ -54,7 +63,8 @@
   flex: 1;
 }
 
-#addBookForm input {
+#checkbox {
+  width: 1rem;
   height: 1rem;
 }
 
@@ -64,16 +74,17 @@ hr {
 
 #catalog {
   width: 100%;
+  padding: 1rem;
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  justify-content: start;
+  justify-content: center;
 }
 
 #catalog > .card {
   background-color: rgb(238, 235, 235);
   height: fit-content;
-  width: 20%;
+  width: 25%;
   padding: 2rem;
   border-radius: 1rem;
 
@@ -81,4 +92,37 @@ hr {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.actionButton {
+  width: 80%;
+  margin-top: 5px;
+}
+
+button {
+  border: none;
+  border-radius: 10px;
+  padding: 0.7rem;
+}
+
+/* Styling Classes */
+.positive {
+  background-color: #446bf7;
+  color: #ffffff;
+}
+
+.danger {
+  background-color: #ea3755;
+  color: white;
+}
+
+.success {
+  background-color: #5da271;
+  color: #ffffff;
+}
+
+.formInput {
+  padding: 1rem;
+  height: 1rem;
+  font-size: 1rem;
 }

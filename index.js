@@ -14,18 +14,39 @@ function addBookToLibrary(newBook) {
   LIBRARY.push(newBook);
 }
 
-function toggleReadStatus() {
-  // Do something
+function toggleReadStatus(bookID) {
+  const updatedLibrary = [];
+
+  LIBRARY.forEach((book) => {
+    if (parseInt(bookID) === book.id) {
+      book.readYet = !book.readYet;
+    }
+    updatedLibrary.push(book);
+  });
+
+  LIBRARY = updatedLibrary;
+
+  displayLibrary();
 }
 
-function removeBookFromLibrary(id) {
-  LIBRARY = LIBRARY.filter((book) => parseInt(id) != book.id);
+function removeBookFromLibrary(bookID) {
+  let updatedLibrary = [];
+
+  LIBRARY.forEach((book) => {
+    if (parseInt(bookID) !== book.id) {
+      updatedLibrary.push(book);
+    }
+  });
+
+  LIBRARY = updatedLibrary;
+
   displayLibrary();
 }
 
 // UI Display Functions
 function createCard(book) {
   const catalog = document.getElementById("catalog");
+  const readYet = book.readYet ? "Read" : "Not Read Yet";
 
   let newCard = document.createElement("div");
   newCard.classList.add("card");
@@ -33,20 +54,34 @@ function createCard(book) {
   for (let prop in book) {
     if (prop === "id") {
       newCard.setAttribute("data-id", book[prop]);
+    } else if (prop != "readYet") {
+      let newElement = document.createElement("p");
+      newElement.classList.add(prop);
+      newElement.innerHTML = book[prop];
+      newCard.appendChild(newElement);
     }
-    let newElement = document.createElement("p");
-    newElement.classList.add(prop);
-    newElement.innerHTML = book[prop];
-    newCard.appendChild(newElement);
   }
 
-  const toggleButton = document.createElement("button");
-  toggleButton.innerHTML = "Toggle Status";
-  newCard.append(toggleButton);
+  const toggleStatusButton = document.createElement("button");
+  toggleStatusButton.innerHTML = readYet;
+  toggleStatusButton.classList.add("actionButton");
+  toggleStatusButton.classList.add(book.readYet ? "success" : "danger");
+  toggleStatusButton.addEventListener("click", () => {
+    const bookID = toggleStatusButton.parentElement.getAttribute("data-id");
+    toggleReadStatus(bookID);
+  });
+
+  newCard.append(toggleStatusButton);
 
   const removeButton = document.createElement("button");
   removeButton.innerHTML = "Remove Book";
-  removeButton.classList.add("removeButton");
+  removeButton.classList.add("actionButton");
+  removeButton.classList.add("danger");
+  removeButton.addEventListener("click", () => {
+    const bookID = removeButton.parentElement.getAttribute("data-id");
+    removeBookFromLibrary(bookID);
+  });
+
   newCard.append(removeButton);
 
   catalog.appendChild(newCard);
@@ -62,8 +97,6 @@ function displayLibrary() {
   } else {
     document.getElementById("catalog").replaceChildren();
   }
-
-  return;
 }
 
 function openDialog() {
@@ -76,12 +109,13 @@ function closeModal() {
   dialog.close();
 }
 
+// Document functions
 document.addEventListener("DOMContentLoaded", () => {
   displayLibrary();
   // Open form dialog
   document.getElementById("addBook").addEventListener("click", openDialog);
 
-  //   Close form dialog
+  // Close form dialog
   document
     .getElementById("closeDialogButton")
     .addEventListener("click", closeModal);
@@ -105,12 +139,5 @@ document.addEventListener("DOMContentLoaded", () => {
     displayLibrary();
     closeModal();
     form.reset();
-
-    document.querySelectorAll(".removeButton").forEach((button) => {
-      button.addEventListener("click", () => {
-        const bookID = button.parentElement.getAttribute("data-id");
-        removeBookFromLibrary(bookID);
-      });
-    });
   });
 });
