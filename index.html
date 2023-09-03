@@ -4,26 +4,46 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Library</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="index.css" />
   </head>
   <body>
     <nav>
-      <h1>Library</h1>
+      <h1 id="header">Library</h1>
       <button id="addBook">Add Book</button>
     </nav>
     <dialog id="formDialog">
-      <div id="closeDialog">
-        <button id="closeDialogButton" class="danger">X</button>
-      </div>
       <div id="formContainer">
+        <div id="closeDialog">
+          <button id="closeDialogButton" class="danger">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-x-lg"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"
+              />
+            </svg>
+          </button>
+        </div>
         <form id="addBookForm">
           <div>
             <label for="title">Title:</label>
             <input
               type="text"
               name="title"
-              placeholder="title"
+              placeholder="Title"
               class="formInput"
+              autocomplete="off"
               required
             />
           </div>
@@ -34,6 +54,7 @@
               name="author"
               placeholder="Author"
               class="formInput"
+              autocomplete="off"
               required
             />
           </div>
@@ -44,6 +65,7 @@
               name="pages"
               placeholder="Number of pages"
               class="formInput"
+              autocomplete="off"
               required
             />
           </div>
@@ -51,9 +73,9 @@
             <label for="readYet">Have you read this yet?</label>
             <input type="checkbox" name="readYet" id="checkbox" />
           </div>
-          <div id="buttonFields" class="horizontalField">
-            <button type="submit" id="addButton" class="positive formInput">
-              Add
+          <div id="buttonFields">
+            <button type="submit" id="addButton" class="positive">
+              Add Book
             </button>
           </div>
         </form>

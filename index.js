@@ -82,7 +82,7 @@ function createCard(book) {
     removeBookFromLibrary(bookID);
   });
 
-  newCard.append(removeButton);
+  newCard.appendChild(removeButton);
 
   catalog.appendChild(newCard);
 }
@@ -95,7 +95,11 @@ function displayLibrary() {
       createCard(LIBRARY[i]);
     }
   } else {
-    document.getElementById("catalog").replaceChildren();
+    const catalog = document.getElementById("catalog");
+    const content = document.createElement("p");
+    content.innerHTML = "There's nothing here. Add a book to get started";
+
+    catalog.appendChild(content);
   }
 }
 
@@ -106,6 +110,8 @@ function openDialog() {
 
 function closeModal() {
   const dialog = document.getElementById("formDialog");
+  const form = document.getElementById("addBookForm");
+  form.reset();
   dialog.close();
 }
 
@@ -127,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const formFields = form.elements;
 
     const title = formFields.title.value;
-    const author = formFields.title.value;
+    const author = formFields.author.value;
     const pages = formFields.pages.value;
     const readYet = formFields.readYet.checked;
 
