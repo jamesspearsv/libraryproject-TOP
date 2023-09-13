@@ -1,136 +1,154 @@
-// Book object constructor
-function Book(title, author, pages, readYet) {
-  this.id = Math.floor(Math.random() * 10000);
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.readYet = readYet;
-}
+// TODO
+// [x] Refractor book constructor into factory function
+// [x] Refactor library into class
+//        Requires:
+//        library array
+//        library functions
+// [x] Write display controller module
 
-let LIBRARY = [];
+const Book = (title, author, pages, readYet) => {
+  const id = Math.floor(Math.random() * 1000);
+  return { id, title, author, pages, readYet };
+};
 
-// Catalog Functions
-function addBookToLibrary(newBook) {
-  LIBRARY.push(newBook);
-}
+const testBook = Book("The Martian", "Andy Weir", 250, false);
 
-function toggleReadStatus(bookID) {
-  const updatedLibrary = [];
-
-  LIBRARY.forEach((book) => {
-    if (parseInt(bookID) === book.id) {
-      book.readYet = !book.readYet;
-    }
-    updatedLibrary.push(book);
-  });
-
-  LIBRARY = updatedLibrary;
-
-  displayLibrary();
-}
-
-function removeBookFromLibrary(bookID) {
-  let updatedLibrary = [];
-
-  LIBRARY.forEach((book) => {
-    if (parseInt(bookID) !== book.id) {
-      updatedLibrary.push(book);
-    }
-  });
-
-  LIBRARY = updatedLibrary;
-
-  displayLibrary();
-}
-
-// UI Display Functions
-function createCard(book) {
-  const catalog = document.getElementById("catalog");
-  const readYet = book.readYet ? "Read" : "Not Read Yet";
-
-  let newCard = document.createElement("div");
-  newCard.classList.add("card");
-
-  for (let prop in book) {
-    if (prop === "id") {
-      newCard.setAttribute("data-id", book[prop]);
-    } else if (prop != "readYet") {
-      let newElement = document.createElement("p");
-      newElement.classList.add(prop);
-      newElement.innerHTML = book[prop];
-      newCard.appendChild(newElement);
-    }
+class Library {
+  constructor() {
+    return 1;
   }
 
-  const toggleStatusButton = document.createElement("button");
-  toggleStatusButton.innerHTML = readYet;
-  toggleStatusButton.classList.add("actionButton");
-  toggleStatusButton.classList.add(book.readYet ? "success" : "danger");
-  toggleStatusButton.addEventListener("click", () => {
-    const bookID = toggleStatusButton.parentElement.getAttribute("data-id");
-    toggleReadStatus(bookID);
-  });
+  catalog = [testBook];
 
-  newCard.append(toggleStatusButton);
+  add(newBook) {
+    this.catalog.push(newBook);
+    DisplayController.closeDialog();
+    DisplayController.displayLibrary();
+  }
 
-  const removeButton = document.createElement("button");
-  removeButton.innerHTML = "Remove Book";
-  removeButton.classList.add("actionButton");
-  removeButton.classList.add("danger");
-  removeButton.addEventListener("click", () => {
-    const bookID = removeButton.parentElement.getAttribute("data-id");
-    removeBookFromLibrary(bookID);
-  });
+  remove(id) {
+    let updatedCatalog = [];
+    this.catalog.forEach((book) => {
+      if (parseInt(id) !== book.id) {
+        updatedCatalog.push(book);
+      }
+    });
+    this.catalog = updatedCatalog;
+    DisplayController.displayLibrary();
+  }
 
-  newCard.appendChild(removeButton);
-
-  catalog.appendChild(newCard);
-}
-
-function displayLibrary() {
-  document.getElementById("catalog").replaceChildren();
-
-  if (LIBRARY.length > 0) {
-    for (let i = 0; i < LIBRARY.length; i++) {
-      createCard(LIBRARY[i]);
-    }
-  } else {
-    const catalog = document.getElementById("catalog");
-    const content = document.createElement("p");
-    content.innerHTML = "There's nothing here. Add a book to get started";
-
-    catalog.appendChild(content);
+  updateStatus(id) {
+    let updatedCatalog = [];
+    this.catalog.forEach((book) => {
+      if (parseInt(id) === book.id) {
+        book.readYet = !book.readYet;
+      }
+      updatedCatalog.push(book);
+    });
+    this.catalog = updatedCatalog;
+    DisplayController.displayLibrary();
   }
 }
 
-function openDialog() {
-  const dialog = document.getElementById("formDialog");
-  dialog.showModal();
-}
+const library = new Library();
 
-function closeModal() {
+const DisplayController = (() => {
+  // Document element selectors
   const dialog = document.getElementById("formDialog");
   const form = document.getElementById("addBookForm");
-  form.reset();
-  dialog.close();
-}
+  const catalog = document.getElementById("catalog");
 
-// Document functions
+  const displayLibrary = () => {
+    document.getElementById("catalog").replaceChildren();
+
+    if (library.catalog.length > 0) {
+      for (let i = 0; i < library.catalog.length; i++) {
+        DisplayController.createCard(library.catalog[i]);
+      }
+    } else {
+      const catalog = document.getElementById("catalog");
+      const content = document.createElement("p");
+      content.innerHTML = "There's nothing here. Add a book to get started";
+
+      catalog.appendChild(content);
+    }
+  };
+
+  const createCard = (book) => {
+    // Create card div and apply content from book props
+    let newCard = document.createElement("div");
+    newCard.classList.add("card");
+
+    for (let prop in book) {
+      if (prop === "id") {
+        newCard.setAttribute("data-id", book[prop]);
+      } else if (prop != "readYet") {
+        let newElement = document.createElement("p");
+        newElement.classList.add(prop);
+        newElement.innerHTML = book[prop];
+        newCard.appendChild(newElement);
+      }
+    }
+
+    // Set content for toggle status button and append to div
+    const readYet = book.readYet ? "Read" : "Not Read Yet";
+    const toggleStatusButton = document.createElement("button");
+    toggleStatusButton.innerHTML = readYet;
+    toggleStatusButton.classList.add(
+      "actionButton",
+      book.readYet ? "success" : "danger"
+    );
+    toggleStatusButton.addEventListener("click", () => {
+      const bookID = toggleStatusButton.parentElement.getAttribute("data-id");
+      library.updateStatus(bookID);
+    });
+    newCard.append(toggleStatusButton);
+
+    // Create and append remove button to div
+    const removeButton = document.createElement("button");
+    removeButton.innerHTML = "Remove Book";
+    removeButton.classList.add("actionButton", "danger");
+    removeButton.addEventListener("click", () => {
+      const bookID = removeButton.parentElement.getAttribute("data-id");
+      library.remove(bookID);
+    });
+    newCard.appendChild(removeButton);
+
+    // Append card to catalog
+    catalog.appendChild(newCard);
+  };
+
+  const openDialog = () => {
+    dialog.showModal();
+  };
+
+  const closeDialog = () => {
+    form.reset();
+    dialog.close();
+  };
+
+  return { displayLibrary, createCard, openDialog, closeDialog };
+})();
+
+// Attach UI elements to Display Controller functions
 document.addEventListener("DOMContentLoaded", () => {
-  displayLibrary();
+  // Display catalog on initial load
+  DisplayController.displayLibrary();
+
   // Open form dialog
-  document.getElementById("addBook").addEventListener("click", openDialog);
+  document
+    .getElementById("addBook")
+    .addEventListener("click", DisplayController.openDialog);
 
   // Close form dialog
   document
     .getElementById("closeDialogButton")
-    .addEventListener("click", closeModal);
+    .addEventListener("click", DisplayController.closeDialog);
 
-  //   Submit the add book form
-  document.getElementById("addBookForm").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const formFields = form.elements;
+  // Submit the add book form
+  document.getElementById("addBookForm").addEventListener("submit", (event) => {
+    event.preventDefault();
+    const formFields = event.target.elements;
 
     const title = formFields.title.value;
     const author = formFields.author.value;
@@ -138,12 +156,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const readYet = formFields.readYet.checked;
 
     // Make new book object
-    let newBook = new Book(title, author, pages, readYet);
+    const newBook = Book(title, author, pages, readYet);
 
     // Add new book to library
-    addBookToLibrary(newBook);
-    displayLibrary();
-    closeModal();
-    form.reset();
+    library.add(newBook);
   });
 });
